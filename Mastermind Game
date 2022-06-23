@@ -1,0 +1,124 @@
+import random
+
+list = [1,2,3,4,5,6,7]
+
+def get_guess():
+    while True:
+        try:
+            guesslist = []
+            guess = int(input("Enter a number: "))
+            guess = str(guess)
+            check = 0
+            if len(guess) == 4 and guess.find("9")== - 1 and guess.find("8")== - 1 and guess.find("0")== - 1 :
+                for i in range(len(guess)):
+                    for j in range(4):
+                        if i != j:
+                            if guess[i] == guess[j]:
+                                check += 1
+                                
+                                
+                if check == 0:
+                    for i in range (4):
+                        r = int(guess[i])
+                        guesslist.append(r)
+                        
+                    return guesslist
+                
+                else: 
+                    print("Please enter a different number!")
+            else:
+                print("Please enter a number that's only 4 numbers and is between 1-7")
+
+        except ValueError:
+            print("Please enter a number!")
+
+def check_values(computer_list, user_list):
+    check = [0,0,0,0]
+
+    for i in range(4):
+        if user_list[i] == computer_list[i]:
+            check[i] = "RED"
+        
+        elif user_list[i] in computer_list:
+            check[i] = "WHITE"
+        
+        else:
+            check[i] = "BLACK"
+    random.shuffle(check)
+    return check
+
+def create_comp_list():
+    new = [0,0,0,0]
+    new_list = [random.choice(list),random.choice(list),random.choice(list),random.choice(list)]
+
+    for i in range(len(new_list)):
+        while True:
+            if i == 3:
+                new[i] = new_list[i]
+                break
+            
+            else:
+                if new_list[i] == new_list[i-1] or new_list[i] == new_list[i-2] or new_list[i] == new_list[i-3]:
+                    new_list[i] = random.choice(list)
+
+                else:
+                    new[i] = new_list[i]
+                    break
+    return new
+
+def rules():
+    print ("Hello, and welcome to MasterMind!")
+    print ("-----------------------------------------------------------------------")
+    print ("Your goal is to successfully guess four numbers ranging from 1-7 in the")
+    print ("correct order. My secret numbers will be a set of four different values.")
+    print ("-----------------------------------------------------------------------")
+    print ("Each time you make a guess, I will give a color response of three options:")
+    print ("BLACK, RED, WHITE")
+    print ("BLACK = A number you guessed isn't one of the secret numbers.")
+    print ("WHITE = A number you guessed IS one of the secret numbers, but not in the")
+    print ("PLACE where you guessed it")
+    print ("RED = A number you guessed IS one of the secret numbers, and IS where you") 
+    print ("guessed it.")
+    print ("The order of the colors is random. So even if you see RED in the third spot,")
+    print ("it does NOT")
+    print ("mean that your third guess is in the correct place.")
+    print ("-----------------------------------------------------------------------")
+    print ("For example, my secret numbers are 4326.")
+    print ("For your guess, you might say four numbers: 3671.")
+    print ("You guessed two of the numbers correctly, but in the wrong order!")
+    print ("My reponse would be 'White' 'White' 'Black' 'Black'")
+    print ("Which indicates that you got two numbers correct, but not in the right")
+    print ("locations.")
+    print ("----------------------------------------------------------------------")
+    print ("If you had guessed 7316, my response would be")
+    print ("'Red' 'Red' 'Black' 'Black'")
+    print ("indicating that you guessed two numbers correct and in the right place,")
+    print ("and two incorrect numbers.")
+    print ("----------------------------------------------------------------------")
+    print ("Let's play!")
+
+def play_game():
+    rules()
+    number = 10
+    r = create_comp_list()
+    
+    for i in range(10):
+        
+        answer = check_values(r,get_guess()) 
+        print (answer)
+
+        if answer == ["RED", "RED", "RED", "RED"]:
+            print ("Congrats! Your parents love you now :D")
+            print ("You have won!")
+            break
+        
+        else:
+            number = number - 1
+            print ("Number of guess left: " + str(number))
+
+    if answer != ["RED", "RED", "RED", "RED"]:
+        print("You Lost!")
+        print("This is the right answer!")
+        print (r)
+
+play_game()
